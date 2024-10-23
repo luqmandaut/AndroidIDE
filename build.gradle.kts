@@ -34,6 +34,8 @@ plugins {
   alias(libs.plugins.kotlin.jvm) apply false
   alias(libs.plugins.maven.publish) apply false
   alias(libs.plugins.gradle.publish) apply false
+  alias(libs.plugins.protobuf) apply false
+  alias(libs.plugins.benchmark) apply false
 }
 
 buildscript {
@@ -43,7 +45,18 @@ buildscript {
   }
 }
 
+// Root project has 'com.itsaky.androidide' as the group ID
+project.group = BuildConfig.packageName
+
 subprojects {
+  if (project != rootProject) {
+    var group = project.parent!!.group
+    if (project.parent != rootProject) {
+      group = "${group}.${project.parent!!.name}"
+    }
+    project.group = group
+  }
+
   // Always load the F-Droid config
   FDroidConfig.load(project)
 
@@ -51,7 +64,6 @@ subprojects {
     apply { plugin(AndroidIDEPlugin::class.java) }
   }
 
-  project.group = BuildConfig.packageName
   project.version = rootProject.version
 
   plugins.withId("com.android.application") {
@@ -70,7 +82,10 @@ subprojects {
   }
 
   tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = BuildConfig.javaVersion.toString()
+    kotlinOptions {
+      jvmTarget = BuildConfig.javaVersion.toString()
+      freeCompilerArgs += "-Xstring-concat=inline"
+    }
   }
 }
 

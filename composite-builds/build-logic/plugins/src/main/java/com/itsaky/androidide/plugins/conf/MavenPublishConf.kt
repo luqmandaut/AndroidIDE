@@ -18,6 +18,7 @@
 package com.itsaky.androidide.plugins.conf
 
 import com.itsaky.androidide.build.config.ProjectConfig
+import com.itsaky.androidide.build.config.publishingVersion
 import com.vanniktech.maven.publish.AndroidMultiVariantLibrary
 import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavaLibrary
@@ -32,10 +33,9 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.withType
-import com.itsaky.androidide.build.config.publishingVersion
 import java.io.File
 
-private val projectsRequiringMavenLocalForTests = arrayOf(":gradle-plugin")
+private val projectsRequiringMavenLocalForTests = arrayOf(":tooling:plugin")
 private val mavenLocalRepos = hashMapOf<String, String>()
 
 @Suppress("UnstableApiUsage")
@@ -45,12 +45,18 @@ fun Project.configureMavenPublish() {
   }
 
   gradle.projectsEvaluated {
+    for (path in projectsRequiringMavenLocalForTests) {
+      checkNotNull(rootProject.findProject(path)) {
+        "Unable to configure maven local for project '$path' (project cannot be found)."
+      }
+    }
     rootProject.subprojects {
       if (project.path in projectsRequiringMavenLocalForTests) {
         tasks.withType<Test> {
           for ((project, _) in mavenLocalRepos) {
             dependsOn(
-              project(project).tasks.getByName("publishAllPublicationsToBuildMavenLocalRepository"))
+              project(project).tasks.getByName("publishAllPublicationsToBuildMavenLocalRepository")
+            )
           }
         }
       }

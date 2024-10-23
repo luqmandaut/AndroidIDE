@@ -44,7 +44,8 @@ dependencyResolutionManagement {
       "jdk-compiler",
       "jdk-jdeps",
       "jdt",
-      "layoutlib-api"
+      "layoutlib-api",
+      "logback-core"
     ),
 
     "build-deps-common" to arrayOf(
@@ -83,6 +84,21 @@ buildscript {
   }
 }
 
+val isGitRepo by lazy {
+  cmdOutput("git", "rev-parse", "--is-inside-work-tree").trim() == "true"
+}
+
+private fun cmdOutput(vararg args: String): String {
+  return ProcessBuilder(*args)
+    .directory(File("."))
+    .redirectErrorStream(true)
+    .start()
+    .inputStream
+    .bufferedReader()
+    .readText()
+    .trim()
+}
+
 FDroidConfig.load(rootDir)
 
 if (FDroidConfig.hasRead && FDroidConfig.isFDroidBuild) {
@@ -94,7 +110,7 @@ if (FDroidConfig.hasRead && FDroidConfig.isFDroidBuild) {
 
     project.setProperty("version", simpleVersion)
   }
-} else {
+} else if(isGitRepo) {
   apply {
     plugin("com.mooltiverse.oss.nyx")
   }
@@ -102,61 +118,66 @@ if (FDroidConfig.hasRead && FDroidConfig.isFDroidBuild) {
 
 rootProject.name = "AndroidIDE"
 
+// keep this sorted alphabetically
 include(
-  ":annotation-processors",
-  ":annotation-processors-ksp",
-  ":annotations",
-  ":actions",
-  ":app",
-  ":build-info",
-  ":common",
-  ":editor",
-  ":editor-api",
-  ":editor-treesitter",
-  ":eventbus",
-  ":eventbus-android",
-  ":eventbus-events",
-  ":gradle-plugin",
-  ":gradle-plugin-config",
-  ":idestats",
-  ":lexers",
-  ":logger",
-  ":logsender",
-  ":logsender-sample",
-  ":lookup",
-  ":preferences",
-  ":resources",
-  ":shared",
-  ":templates-api",
-  ":templates-impl",
-  ":treeview",
-  ":uidesigner",
-  ":xml-inflater",
-  ":lsp:api",
-  ":lsp:models",
-  ":lsp:java",
-  ":lsp:xml",
-  ":subprojects:aaptcompiler",
-  ":subprojects:builder-model-impl",
-  ":subprojects:flashbar",
-  ":subprojects:framework-stubs",
-  ":subprojects:javac-services",
-  ":subprojects:projects",
-  ":subprojects:tooling-api",
-  ":subprojects:tooling-api-events",
-  ":subprojects:tooling-api-impl",
-  ":subprojects:tooling-api-model",
-  ":subprojects:xml-dom",
-  ":subprojects:xml-utils",
-  ":termux:termux-app",
-  ":termux:termux-emulator",
-  ":termux:termux-shared",
-  ":termux:termux-view",
-  ":testing:android",
-  ":testing:common",
-  ":testing:lsp",
-  ":testing:tooling",
-  ":testing:unit",
+  ":annotation:annotations",
+  ":annotation:processors",
+  ":annotation:processors-ksp",
+  ":core:actions",
+  ":core:app",
+  ":core:common",
+  ":core:indexing-api",
+  ":core:indexing-core",
+  ":core:lsp-api",
+  ":core:lsp-models",
+  ":core:projects",
+  ":core:resources",
+  ":editor:api",
+  ":editor:impl",
+  ":editor:lexers",
+  ":editor:treesitter",
+  ":event:eventbus",
+  ":event:eventbus-android",
+  ":event:eventbus-events",
+  ":java:javac-services",
+  ":java:lsp",
+  ":logging:idestats",
+  ":logging:logger",
+  ":logging:logsender",
+  ":logging:logsender-sample",
+  ":termux:application",
+  ":termux:emulator",
+  ":termux:shared",
+  ":termux:view",
+  ":testing:androidTest",
+  ":testing:benchmarks",
+  ":testing:commonTest",
+  ":testing:gradleToolingTest",
+  ":testing:lspTest",
+  ":testing:unitTest",
+  ":tooling:api",
+  ":tooling:builder-model-impl",
+  ":tooling:events",
+  ":tooling:impl",
+  ":tooling:model",
+  ":tooling:plugin",
+  ":tooling:plugin-config",
+  ":utilities:build-info",
+  ":utilities:flashbar",
+  ":utilities:framework-stubs",
+  ":utilities:lookup",
+  ":utilities:preferences",
+  ":utilities:shared",
+  ":utilities:templates-api",
+  ":utilities:templates-impl",
+  ":utilities:treeview",
+  ":utilities:uidesigner",
+  ":utilities:xml-inflater",
+  ":xml:aaptcompiler",
+  ":xml:dom",
+  ":xml:lsp",
+  ":xml:resources-api",
+  ":xml:utils",
 )
 
 object FDroidConfig {

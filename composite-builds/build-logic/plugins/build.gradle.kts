@@ -18,7 +18,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    `kotlin-dsl`
+  `kotlin-dsl`
 }
 
 repositories {
@@ -50,6 +50,10 @@ gradlePlugin {
     create("com.itsaky.androidide.build") {
       id = "com.itsaky.androidide.build"
       implementationClass = "com.itsaky.androidide.plugins.AndroidIDEPlugin"
+    }
+    create("com.itsaky.androidide.core-app") {
+      id = "com.itsaky.androidide.core-app"
+      implementationClass = "com.itsaky.androidide.plugins.AndroidIDECoreAppPlugin"
     }
     create("com.itsaky.androidide.build.propsparser") {
       id = "com.itsaky.androidide.build.propsparser"
