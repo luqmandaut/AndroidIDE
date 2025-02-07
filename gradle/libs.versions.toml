@@ -16,7 +16,7 @@ androidx-work = "2.9.0"
 androidx-espresso = "3.5.1"
 retrofit = "2.9.0"
 markwon = "4.6.2"
-maven-publish-plugin = "0.27.0"
+maven-publish-plugin = "0.29.0"
 logback = "1.5.3"
 realm = "10.18.0"
 benchmark = "1.2.4"
@@ -54,7 +54,7 @@ common-glide_ap = { module = "com.github.bumptech.glide:compiler", version.ref =
 common-jsoup = { module = "org.jsoup:jsoup", version = "1.17.2" }
 common-antlr4 = { module = "org.antlr:antlr4", version.ref = "antlr4" }
 common-antlr4-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr4" }
-common-javaparser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version = "3.25.8" }
+common-javaparser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version = "3.26.1" }
 common-lang3 = { module = "org.apache.commons:commons-lang3", version = "3.14.0" }
 common-io = { module = "commons-io:commons-io", version = "2.15.1" }
 common-kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -142,7 +142,7 @@ git-jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version = "6.8.0.2023
 tests-junit = { module = "junit:junit", version = "4.13.2" }
 tests-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 tests-junit-platformLauncher = { module = "org.junit.platform:junit-platform-launcher" }
-tests-google-truth = { module = "com.google.truth:truth", version = "1.4.1" }
+tests-google-truth = { module = "com.google.truth:truth", version = "1.4.4" }
 tests-robolectric = { module = "org.robolectric:robolectric", version = "4.11.1" }
 tests-androidx-test-core = { module = "androidx.test:core", version = "1.5.0" }
 tests-androidx-test-runner = { module = "androidx.test:runner", version = "1.5.2" }
